@@ -2,12 +2,12 @@ local protected_call = (require 'obey.execute').call
 
 local noop = function () end
 
-local function isFunction (value)
+local function isCallable (value)
   if type(value) == 'function' then
     return true
   elseif type(value) == 'table' then
     local mt = getmetatable(value)
-    if type(mt) == 'table' and isFunction(mt.__call) then
+    if type(mt) == 'table' and isCallable(mt.__call) then
       return true
     end
   end
@@ -20,7 +20,10 @@ local function wrap_command (env, fn)
     local ok, result = protected_call(env, fn, ...)
 
     if ok then
-      return isFunction(result) and result() or result
+      if isCallable(result) then
+        return result()
+      end
+      return result
     else -- Error
       print(result)
       return 1
