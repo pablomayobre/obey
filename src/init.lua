@@ -1,6 +1,6 @@
 local obey = {}
 
-local unpack = unpack or table.unpack -- luacheck: compat
+local unpack = require "obey.compat".unpack -- luacheck: compat
 
 obey.execute = require 'obey.execute'
 obey.plugins = require 'obey.plugins'
